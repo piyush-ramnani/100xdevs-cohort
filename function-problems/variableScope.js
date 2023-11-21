@@ -4,10 +4,11 @@ Question-7:  Write a function that has a local variable and another function tha
 
 const readline = require("readline");
 
-let globalScore = 0; // Global variable to track the overall score
+// Global variable to track the overall score
 
 function playGame() {
-  let roundScore = 0; // Local variable to track the score for the current round
+  let globalScore = 0;
+  // Function with local variable to track the score for the current round
 
   const rl = readline.createInterface({
     input: process.stdin,
@@ -19,23 +20,25 @@ function playGame() {
   let questionIndex = 0;
 
   function askQuestion() {
+    let roundScore = 0;
     rl.question(questions[questionIndex], (answer) => {
       if (parseInt(answer) === 2 + (questionIndex + 1)) {
         console.log("Correct!");
         roundScore += 10; //Local variable updated
-        console.log(`roundScore: ${roundScore}`);
+        console.log(`Round Score: ${roundScore}`);
       } else {
         console.log("Incorrect!");
-        console.log(`roundScore: ${roundScore}`);
+        console.log(`Round score ${roundScore}`);
       }
 
       questionIndex++;
+      globalScore += roundScore;
 
       if (questionIndex < questions.length) {
         askQuestion();
       } else {
-        rl.close();
         displayScores();
+        rl.close();
       }
     });
   }
@@ -43,10 +46,7 @@ function playGame() {
   askQuestion();
 
   function displayScores() {
-    // Update the global score based on the round score
-    globalScore += roundScore;
-
-    console.log(`Round Score: ${roundScore}`);
+    // function with global variable to keep track of overall score
     console.log(`Global Score: ${globalScore}`);
   }
 }
