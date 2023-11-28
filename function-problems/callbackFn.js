@@ -5,19 +5,19 @@ Write a function that takes an array and a callback function. Apply the callback
 function outer(A, callback) {
   //---(1)
   console.log("Original Array: ", A);
+
+  callback(A); //---(2)
+}
+
+const myArray = ["item1", "item2", "item3"];
+
+outer(myArray, (A) => {
+  //---(3)
   let n = A.length;
 
   for (let i = 0; i < n; i++) {
     A[i] = A[i] + "modified";
   }
-
-  callback(); //---(2)
-}
-
-const myArray = ["item1", "item2", "item3"];
-
-outer(myArray, () => {
-  //---(3)
   console.log("callback function executed!");
   console.log(myArray);
 });
