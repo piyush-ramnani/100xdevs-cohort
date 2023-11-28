@@ -1,5 +1,7 @@
 /*
 Question-7:  Write a function that has a local variable and another function that has a global variable. Demonstrate the difference between global and local scope.
+
+Question-8:  Write a function that returns another function. The inner function should have access to a variable from the outer function.s
 */
 
 const readline = require("readline");
