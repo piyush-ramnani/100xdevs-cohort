@@ -1,3 +1,5 @@
+//Create a simple server that listens to a port
+
 const express = require("express");
 
 const app = express();
