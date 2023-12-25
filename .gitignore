@@ -2,3 +2,5 @@ node_modules
 solutions
 assignments/
 .DS_Store
+package-lock.json
+.gitignore
