@@ -1,64 +1,85 @@
+/*
+1. Connect to a DB
+2. Use zod for input validation
+3. Save the user data in MongoDB
+*/
+
 const express = require("express");
-const jwt = require("jsonwebtoken");
-const jwtPassword = "123456";
+const mongoose = require("mongoose");
+const zod = require("zod");
 
 const app = express();
-const port = 3000;
-
 app.use(express.json());
 
-const ALL_USERS = [
+// Connect to MongoDB
+mongoose.connect(
+  "mongodb+srv://admin:02041996@practisecluster.agvl9l9.mongodb.net/userData_test?retryWrites=true&w=majority",
   {
-    username: "ramnani.piyush@gmail.com",
-    password: "password01",
-    name: "Piyush Ramnani",
-  },
-  {
-    username: "gupta.samrat@gmail.com",
-    password: "password02",
-    name: "Samrat Gupta",
-  },
-  {
-    username: "singla.sahil@gmail.com",
-    password: "password03",
-    name: "Sahil Singla",
-  },
-];
-
-function verifyUser(username, password) {
-  let user = ALL_USERS.find(
-    (u) => u.username === username && u.password === password
-  );
-  return user;
-}
-
-app.post("/login", function (req, res) {
-  const username = req.body.username;
-  const password = req.body.password;
-
-  if (!verifyUser(username, password)) {
-    res.status(401).send({ message: "Invalid Username or Password" });
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   }
+);
 
-  var token = jwt.sign({ username: username }, jwtPassword);
-  return res.json({ token });
+// SCHEMA FOR MONGOOSE
+const userSchema = new mongoose.Schema({
+  username: String,
+  password: String,
+  email: String,
 });
 
-app.get("/users", function (req, res) {
-  const authHeader = req.headers.authorization;
+//MODEL OR PRE-EXISTING COLLECTION
+const User = mongoose.model("User", userSchema);
+
+// ZOD VALIDATION SCHEMA
+const userValidator = zod.object({
+  username: zod.string(),
+  password: zod.string(),
+  email: zod.string().email(),
+});
+
+// MIDDLEWARE
+function validateUserInput(req, res, next) {
+  const userInput = req.body;
 
   try {
-    const decoded = jwt.verify(authHeader, jwtPassword); //returns error on fail
-    const username = decoded.username;
-    res.json({
-      //return all users except the logged in user
-      users: ALL_USERS.filter((user) => user.username !== username),
-    });
+    // Input validation by zod
+    const validatedUserInput = userValidator.parse(userInput);
+    req.validatedUserInput = validatedUserInput; // Save validated data to the request object
+    next();
   } catch (error) {
-    return res.status(403).json({ message: "Invalid token" });
+    return res.status(400).json({ error: error.errors });
+  }
+}
+
+app.post("/signup", validateUserInput, async function (req, res) {
+  const { username, password, email } = req.validatedUserInput;
+
+  try {
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already in use" });
+    }
+
+    // Create a new user instance using the Mongoose model
+    const newUser = new User({
+      username,
+      password,
+      email,
+    });
+
+    // Save the new user to the database
+    await newUser.save();
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
