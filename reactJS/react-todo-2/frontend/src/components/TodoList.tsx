@@ -1,4 +1,27 @@
-function TodoList({ todos }: any) {
+import axios from "axios";
+
+function TodoList({ onTodoCompleted, todos }: any) {
+  const done = async (todoId: any) => {
+    try {
+      const onDone = await axios.put(
+        `http://localhost:3000/todos/completed/${todoId}`,
+        null,
+        {
+          //headers should always be in the 3rd argument, make 2nd arg as null if nothing to send.
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      if (onDone) {
+        onTodoCompleted();
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
   if (todos.length > 0) {
     return (
       <div className="container mx-auto flex items-center justify-between flex-col w-[40%] py-2 border border-gray-600">
@@ -12,7 +35,10 @@ function TodoList({ todos }: any) {
               >
                 <h2 className="text-2xl">Title: {item.title}</h2>
                 <p>Description: {item.description}</p>
-                <button className="bg-gray-700 rounded-md px-2">
+                <button
+                  className="bg-gray-700 rounded-md px-2"
+                  onClick={() => done(item.id)}
+                >
                   {item.completed == true ? "Done" : "Mark as Completed"}
                 </button>
               </li>

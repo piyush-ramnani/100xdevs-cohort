@@ -63,7 +63,7 @@ const Register = () => {
           className="bg-blue-900 text-white px-8 py-2 rounded-xl"
           onClick={signIn}
         >
-          Register
+          Login
         </button>
       </div>
     </div>

@@ -31,7 +31,6 @@ const CreateTodo = ({ onTodoCreated }: any) => {
       );
       if (postData) {
         onTodoCreated(); //To dynamically update the Todo list as soon as it is created
-        alert("Todo Created, please refresh!");
       }
     } catch (error) {
       console.log(`Error: ${error}`);

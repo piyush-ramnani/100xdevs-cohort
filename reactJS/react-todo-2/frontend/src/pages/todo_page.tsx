@@ -32,11 +32,15 @@ const Todos = () => {
   const handleTodoCreated = () => {
     fetchData();
   };
+
+  const handleCompleted = () => {
+    fetchData();
+  };
   return (
     <div>
       {/* "onTodoCreated" prop to fetch the todos from db as soon as created */}
       <CreateTodo onTodoCreated={handleTodoCreated}></CreateTodo>
-      <TodoList todos={todos}></TodoList>
+      <TodoList todos={todos} onTodoCompleted={handleCompleted}></TodoList>
     </div>
   );
 };
