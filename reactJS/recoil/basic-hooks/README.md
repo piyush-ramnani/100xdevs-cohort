@@ -1,8 +1,23 @@
-# React + Vite
+## Recoil
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Recoil is a state management library developed by Facebook specifically for React applications.
 
-Currently, two official plugins are available:
+It introduces the concept of atoms and selectors, providing a more flexible and scalable approach to managing and sharing state.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Problem
+
+Context APIs re-rendering issue
+
+## Usage
+
+# 1. Define an atom
+
+![Recoil-atom-screenshot](./recoil-atom.png)
+
+# 2. Recoil root wrapper
+
+![Recoil-recoilroot- wrapper-screenshot](./recoil-recoilroot-wrapper.png)
+
+# hooks usage
+
+![Recoil-hooks-usage-screenshot](./recoil-hooks-usage.png)
