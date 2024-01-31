@@ -17,3 +17,13 @@ Smallest unit of recoil
 ## Recoil hooks and its usage
 
 ![recoil-hooks.png](./recoil-hooks.png)
+
+## Selectors
+
+Selectors are used to derive data from atoms, they can be derived synchronously or asynchronously. They will automatically track dependencies for you using get function.
+
+Selectors are used to derive data from atoms, they can be derived based on other atoms or derived from multiple atoms at once.
+
+They will automatically update when any dependencies change.
+
+![recoil-selector.png](./recoil-selector.png)
