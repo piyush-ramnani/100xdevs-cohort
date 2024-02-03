@@ -15,7 +15,7 @@ function App({}: DemoProps) {
     return () => {
       console.log("useEffect being cleaned up!");
     };
-  }, [count]); //Dependency Array
+  }, [count]);
 
   return (
     <div>
